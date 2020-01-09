@@ -65,10 +65,6 @@ const string kPathSeparator = "/";
 
 }
 
-// register custom data type
-HIAI_REGISTER_DATA_TYPE("ConsoleParams", ConsoleParams);
-HIAI_REGISTER_DATA_TYPE("EngineTrans", EngineTrans);
-
 HIAI_StatusT GeneralImage::Init(
     const hiai::AIConfig& config,
     const vector<hiai::AIModelDescription>& model_desc) {

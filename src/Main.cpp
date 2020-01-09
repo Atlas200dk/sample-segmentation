@@ -94,6 +94,7 @@ void SetConsoleParams(char *argv[], shared_ptr<ConsoleParams> param_ptr) {
   param_ptr->model_height = atoi(argv[kModelHeightPos]);
   param_ptr->input_path = string(argv[kImagePathPos]);
   param_ptr->output_path = string(argv[kOutputPathPos]);
+  param_ptr->output_nums = atoi(argv[kOutputNumsPos]);
 }
 
 int main(int argc, char *argv[]) {

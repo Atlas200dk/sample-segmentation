@@ -29,10 +29,12 @@ check_param_configure()
     check_remote_host
     if [ $? -ne 0 ];then
 		return 1
-    fi 
+    fi
 
+    model_name=`cat ${app_path}/param_configure.conf | grep "model_name" | awk -F'[ =]+' '{print $2}'`
+    [[ ${model_name##*.} == "om" ]] || (echo "please check your param_configure.conf to make sure that model_name has a valid name.";return 1)
+    return 0
 }
-
 
 function main()
 {
@@ -70,10 +72,10 @@ function main()
             echo "success" > ${script_path}/Tag
         fi
     fi
-	
-	echo "Modify param information in graph.config..."
+    
+    echo "Modify param information in graph.config..."
     count=0
-	for om_name in $(find ${script_path}/ -name "*.om");do
+    for om_name in $(find ${script_path}/ -name "${model_name}");do
 		let count++
 		if [ $count -ge 1 ];then
 			break
@@ -81,7 +83,7 @@ function main()
     done
     
     if [ $count -eq 0 ];then
-        echo "please push your model file in sample_segmentation/script "
+        echo "please push your model file in sample_segmentation/script/ "
         return 1
     fi
    

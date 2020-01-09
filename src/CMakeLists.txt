@@ -40,8 +40,7 @@ if(type STREQUAL host)
         add_compile_options(-DIS_RC)
     endif()
 
-    # add host lib path
-    link_directories($ENV{NPU_HOST_LIB} $ENV{HOME}/ascend_ddk/host/lib /home/HwHiAiUser/HIAI_PROJECTS/ascend_lib $ENV{HOME}/ascend_ddk/device/lib)
+    link_directories($ENV{NPU_HOST_LIB} $ENV{HOME}/ascend_ddk/host/lib $ENV{HOME}/ascend_ddk/device/lib /home/HwHiAiUser/HIAI_PROJECTS/ascend_lib $ENV{NPU_DEVICE_LIB})
     set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
     add_executable(main Main.cpp)
@@ -50,7 +49,7 @@ if(type STREQUAL host)
 
     if(target STREQUAL "RC")
         target_link_libraries(main matrixdaemon mmpa pthread dl rt)
-        target_link_libraries(Host matrixdaemon hiai_common hiai_common media_mini Dvpp_api Dvpp_jpeg_decoder Dvpp_jpeg_encoder Dvpp_vpc ascend_ezdvpp opencv_world)
+        target_link_libraries(Host matrixdaemon hiai_common media_mini ascend_ezdvpp Dvpp_api Dvpp_jpeg_decoder Dvpp_jpeg_encoder Dvpp_vpc ascend_ezdvpp opencv_world)
     else()
         target_link_libraries(main matrix mmpa pthread dl rt)
         target_link_libraries(Host matrix hiai_common)
@@ -62,13 +61,12 @@ if(type STREQUAL host)
     else()
     add_compile_options(-DCPU_ONLY)
 
-    # add device lib path
-    link_directories($ENV{NPU_HOST_LIB} $ENV{HOME}/ascend_ddk/host/lib /home/HwHiAiUser/HIAI_PROJECTS/ascend_lib $ENV{HOME}/ascend_ddk/device/lib)
+    link_directories($ENV{NPU_HOST_LIB} $ENV{HOME}/ascend_ddk/host/lib $ENV{HOME}/ascend_ddk/device/lib /home/HwHiAiUser/HIAI_PROJECTS/ascend_lib $ENV{NPU_DEVICE_LIB})
 
     add_library(Device SHARED general_inference/general_inference.cpp)
 
     if(target STREQUAL "RC")
-        target_link_libraries(Device Dvpp_api Dvpp_jpeg_decoder Dvpp_jpeg_encoder Dvpp_vpc idedaemon hiai_common)
+        target_link_libraries(Device Dvpp_api Dvpp_jpeg_decoder Dvpp_jpeg_encoder Dvpp_vpc idedaemon hiai_common hiai_common media_mini ascend_ezdvpp)
     else()
         target_link_libraries(Device Dvpp_api Dvpp_jpeg_decoder Dvpp_jpeg_encoder Dvpp_vpc idedaemon)
     endif()
