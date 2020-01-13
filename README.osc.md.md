@@ -45,7 +45,7 @@
     </td>
     <td class="cellrowborder" valign="top" width="8.07%" headers="mcps1.2.4.1.2 "><p id="p13270135742510"><a name="p13270135742510"></a><a name="p13270135742510"></a>基于caffe的语义分割模型fcn，是本应用的可选模型</p>
     </td>
-    <td class="cellrowborder" valign="top" width="79.97%" headers="mcps1.2.4.1.3 "><p id="p1227065782511"><a name="p1227065782511"></a><a name="p1227065782511"></a>请参考<a href="https://gitee.com/HuaweiAscend/models/tree/master/computer_vision/segmentation/fcn-8s" target="_blank" rel="noopener noreferrer">https://gitee.com/HuaweiAscend/models/tree/master/computer_vision/segmentation/fcn8s</a>目录中README.md下载原始网络模型文件及其对应的权重文件。</p>
+    <td class="cellrowborder" valign="top" width="79.97%" headers="mcps1.2.4.1.3 "><p id="p1227065782511"><a name="p1227065782511"></a><a name="p1227065782511"></a>请参考<a href="https://gitee.com/HuaweiAscend/models/tree/master/computer_vision/segmentation/fcn-8s" target="_blank" rel="noopener noreferrer">https://gitee.com/HuaweiAscend/models/tree/master/computer_vision/segmentation/fcn-8s</a>目录中README.md下载原始网络模型文件及其对应的权重文件。</p>
     </td>
     </tr>
     </tbody>
@@ -106,7 +106,7 @@
     2.  在弹出的**Convert Model**操作界面中，进行模型转换配置。
         -   Model File选择[步骤2](#li2074865610364)中下载的模型文件，此时会自动匹配到权重文件并填写在Weight File中。
         -   Model Name填写为[表1](#table19942111763710)对应的**模型名称**。
-        -   erfnet、fcn8s模型转换时中AIPP配置中的**Input Image Size\[W\]\[H\]**需要分别修改为128\*16对齐，**Model Image Format**  选择BGR888\_U8，关闭Mean Less\[B|G|R\]选项，其他使用默认值。
+        -   erfnet、fcn-8s模型转换时中AIPP配置中的**Input Image Size\[W\]\[H\]**需要分别修改为128\*16对齐，**Model Image Format**  选择BGR888\_U8，关闭Mean Less\[B|G|R\]选项，其他使用默认值。
 
     3.  单击Finish开始转换模型。
 
@@ -158,7 +158,7 @@ Studio用户手册](https://ascend.huawei.com/doc/mindstudio/)中的“模型转
 
     ```
     remote_host=192.168.1.2 
-    model_name=fcn8s.om
+    model_name=fcn-8s.om
     ```
 
     >![](public_sys-resources/icon-note.gif) **说明：**   
