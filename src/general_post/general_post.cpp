@@ -207,6 +207,7 @@ HIAI_StatusT GeneralPost::SegmentationNetPostProcess(
   sstream << result->console_params.output_path << kFileSperator << kOutputFilePrefix << file_name;
   string output_path = sstream.str();
 
+
   /*write img */ 
   save_ret = cv::imwrite(output_path, displayImage);
   if (!save_ret) {
@@ -215,7 +216,7 @@ HIAI_StatusT GeneralPost::SegmentationNetPostProcess(
     return HIAI_ERROR;
   }
 
- // INFO_LOG("output_image channels imwrite  end \n");
+  printf(" Succss to deal  file %s  \n",result->image_info.path.c_str());
 
   return HIAI_OK;  
 }
