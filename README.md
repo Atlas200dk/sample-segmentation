@@ -158,7 +158,7 @@ Studio用户手册](https://ascend.huawei.com/doc/mindstudio/)中的“模型转
 
     ```
     remote_host=192.168.1.2 
-    model_name=fcn-8s.om
+    model_name=Fcn8s.om
     ```
 
     >![](public_sys-resources/icon-note.gif) **说明：**   
