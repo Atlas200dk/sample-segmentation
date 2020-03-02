@@ -135,7 +135,7 @@
 
     命令示例如下所示：
 
-    **python3 run\_segmentation.py  -w 500 -h 500 -i  _./example.jpg_  -c  _19_ **
+    **python3 run\_segmentation.py  -w 500 -h 500 -i  _./example.jpg_ -c 19 **
 
     -   -w/model\_width：模型的输入图片宽度，为16\~4096之间的整数，请参考[表 通用语义分割网络应用使用模型](#table19942111763710)在Gitee上查看所使用模型文件的Readme，获取模型要求的输入数据的宽和高。
     -   -h/model\_height：模型的输入图片高度，为16\~4096之间的整数，请参考[表 通用语义分割网络应用使用模型](#table19942111763710)在Gitee上查看所使用模型文件的Readme，获取模型要求的输入数据的宽和高。
