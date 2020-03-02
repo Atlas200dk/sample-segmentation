@@ -11,114 +11,20 @@
 -   已完成Mind Studio的安装。
 -   已完成Atlas 200 DK开发者板与Mind Studio的连接，交叉编译器的安装，SD卡的制作及基本信息的配置等。
 
-## 软件准备<a name="section181111827718"></a>
+## 部署<a name="zh-cn_topic_0203223294_section081240125311"></a>
 
-运行此Sample前，需要按照此章节获取源码包，并进行相关的环境配置。
+1.  部署，可以选择如下快速部署或者常规方法部署，二选一即可；
 
-1.  <a name="li953280133816"></a>获取源码包。
+    1.1 快速部署，请参考：https://gitee.com/Atlas200DK/faster-deploy 。
 
-    将[https://gitee.com/Atlas200DK/sample-segmentation/tree/1.3x.0.0/](https://gitee.com/Atlas200DK/sample-segmentation/tree/1.3x.0.0/)仓中的代码以Mind Studio安装用户下载至Mind Studio所在Ubuntu服务器的任意目录，这两个文件必须存放到同一个目录下。例如代码存放路径为：$HOME/AscendProjects/sample-segmentation。
+    >![](public_sys-resources/icon-note.gif) **说明：**   
+    >-   该快速部署脚本可以快速部署多个案例，请选择segmentation案例部署即可。  
+    >-   该快速部署脚本自动完成了代码下载、模型转换、环境变量配置等流程，如果需要了解详细的部署过程请选择常规部署方式，请转**1.2 常规部署**。
 
-2.  <a name="li2074865610364"></a>获取此应用中所需要的原始网络模型。
+    1.2 常规部署，请参考：https://gitee.com/Atlas200DK/sample-README/tree/master/sample-segmentation 。
 
-    参考[表 通用语义分割网络应用使用模型](#table19942111763710)获取此应用中所用到的原始网络模型及其对应的权重文件，并将其存放到Mind Studio所在Ubuntu服务器的任意目录，这两个文件必须存放到同一个目录下。例如：$HOME/models/segmentation。
-
-    **表 1**  通用语义分割网络应用使用模型
-
-    <a name="table19942111763710"></a>
-    <table><thead align="left"><tr id="row611318123710"><th class="cellrowborder" valign="top" width="11.959999999999999%" id="mcps1.2.4.1.1"><p id="p81141820376"><a name="p81141820376"></a><a name="p81141820376"></a>模型名称</p>
-    </th>
-    <th class="cellrowborder" valign="top" width="8.07%" id="mcps1.2.4.1.2"><p id="p13181823711"><a name="p13181823711"></a><a name="p13181823711"></a>模型说明</p>
-    </th>
-    <th class="cellrowborder" valign="top" width="79.97%" id="mcps1.2.4.1.3"><p id="p1717182378"><a name="p1717182378"></a><a name="p1717182378"></a>模型下载路径</p>
-    </th>
-    </tr>
-    </thead>
-    <tbody><tr id="row1119187377"><td class="cellrowborder" valign="top" width="11.959999999999999%" headers="mcps1.2.4.1.1 "><p id="p2027020573255"><a name="p2027020573255"></a><a name="p2027020573255"></a>erfnet</p>
-    </td>
-    <td class="cellrowborder" valign="top" width="8.07%" headers="mcps1.2.4.1.2 "><p id="p22704571258"><a name="p22704571258"></a><a name="p22704571258"></a>基于caffe的语义分割模型erfnet，是本应用的可选模型。</p>
-    </td>
-    <td class="cellrowborder" valign="top" width="79.97%" headers="mcps1.2.4.1.3 "><p id="p3270135716250"><a name="p3270135716250"></a><a name="p3270135716250"></a>请参考<a href="https://gitee.com/HuaweiAscend/models/tree/master/computer_vision/segmentation/erfnet" target="_blank" rel="noopener noreferrer">https://gitee.com/HuaweiAscend/models/tree/master/computer_vision/segmentation/erfnet</a> 目录中README.md下载原始网络模型文件及其对应的权重文件。</p>
-    </td>
-    </tr>
-    <tr id="row1714516557254"><td class="cellrowborder" valign="top" width="11.959999999999999%" headers="mcps1.2.4.1.1 "><p id="p1927010574259"><a name="p1927010574259"></a><a name="p1927010574259"></a>Fcn8s</p>
-    </td>
-    <td class="cellrowborder" valign="top" width="8.07%" headers="mcps1.2.4.1.2 "><p id="p13270135742510"><a name="p13270135742510"></a><a name="p13270135742510"></a>基于caffe的语义分割模型fcn，是本应用的可选模型</p>
-    </td>
-    <td class="cellrowborder" valign="top" width="79.97%" headers="mcps1.2.4.1.3 "><p id="p1227065782511"><a name="p1227065782511"></a><a name="p1227065782511"></a>请参考<a href="https://gitee.com/HuaweiAscend/models/tree/master/computer_vision/segmentation/fcn-8s" target="_blank" rel="noopener noreferrer">https://gitee.com/HuaweiAscend/models/tree/master/computer_vision/segmentation/fcn-8s</a>目录中README.md下载原始网络模型文件及其对应的权重文件。</p>
-    </td>
-    </tr>
-    </tbody>
-    </table>
-
-3.  以Mind Studio安装用户登录Mind Studio所在Ubuntu服务器，确定当前使用的DDK版本号并设置环境变量DDK\_HOME，tools\_version，NPU\_DEVICE\_LIB和LD\_LIBRARY\_PATH。
-    1.  <a name="zh-cn_topic_0203223294_li61417158198"></a>查询当前使用的DDK版本号。
-
-        可通过Mind Studio工具查询，也可以通过DDK软件包进行获取。
-
-        -   使用Mind Studio工具查询。
-
-            在Mind Studio工程界面依次选择“File \> Settings \> System Settings \> Ascend DDK“，弹出如[图 DDK版本号查询](zh-cn_topic_0203223294.md#fig94023140222)所示界面。
-
-            **图 1**  DDK版本号查询<a name="zh-cn_topic_0203223294_fig17553193319118"></a>  
-            ![](figures/DDK版本号查询.png "DDK版本号查询")
-
-            其中显示的**DDK Version**就是当前使用的DDK版本号，如**1.31.T15.B150**。
-
-        -   通过DDK软件包进行查询。
-
-            通过安装的DDK的包名获取DDK的版本号。
-
-            DDK包的包名格式为：**Ascend\_DDK-\{software version\}-\{interface version\}-x86\_64.ubuntu16.04.tar.gz**
-
-            其中**software version**就是DDK的软件版本号。
-
-            例如：
-
-            DDK包的包名为Ascend\_DDK-1.31.T15.B150-1.1.1-x86\_64.ubuntu16.04.tar.gz，则此DDK的版本号为1.31.T15.B150。
-
-    2.  设置环境变量。
-
-        **vim \~/.bashrc**
-
-        执行如下命令在最后一行添加DDK\_HOME及LD\_LIBRARY\_PATH的环境变量。
-
-        **export tools\_version=_1.31.X.X_**
-
-        **export DDK\_HOME=\\$HOME/.mindstudio/huawei/ddk/\\$tools\_version/ddk**
-
-        **export NPU\_DEVICE\_LIB=$DDK\_HOME/../RC/host-aarch64\_Ubuntu16.04.3/lib**
-
-        **export LD\_LIBRARY\_PATH=$DDK\_HOME/lib/x86\_64-linux-gcc5.4**
-
-        >![](public_sys-resources/icon-note.gif) **说明：**   
-        >-   **_1.31.X.X_**是[a](#zh-cn_topic_0203223294_li61417158198)中查询到的DDK版本号，需要根据查询结果对应填写，如**1.31.T15.B150**  
-        >-   如果此环境变量已经添加，则此步骤可跳过。  
-
-        输入**:wq!**保存退出。
-
-        执行如下命令使环境变量生效。
-
-        **source \~/.bashrc**
-
-4.  将原始网络模型转换为适配昇腾AI处理器的模型。
-    1.  在Mind Studio操作界面的顶部菜单栏中选择**Tool \> Convert Model**，进入模型转换界面。
-    2.  在弹出的**Convert Model**操作界面中，进行模型转换配置。
-        -   Model File选择[步骤2](#li2074865610364)中下载的模型文件，此时会自动匹配到权重文件并填写在Weight File中。
-        -   Model Name填写为[表1](#table19942111763710)对应的**模型名称**。
-        -   erfnet、fcn-8s模型转换时中AIPP配置中的**Input Image Size\[W\]\[H\]**需要分别修改为128\*16对齐，**Model Image Format**  选择BGR888\_U8，关闭Mean Less\[B|G|R\]选项，其他使用默认值。
-
-    3.  单击Finish开始转换模型。
-
-        模型转换成功后，后缀为.om的离线模型存放地址为：$HOME/modelzoo/XXX/device。
-
-        >![](public_sys-resources/icon-note.gif) **说明：**   
-        >-   Mind Studio模型转换中每一步的具体意义和参数说明可以参考[Mind  
-Studio用户手册](https://ascend.huawei.com/doc/mindstudio/)中的“模型转换”章节。  
-        >-   XXX表示当前转换的模型名称，如erfnet.om存放地址为：$HOME/modelzoo/erfnet/device。  
-
-
-5.  将转换好的模型文件（.om文件）上传到[步骤1](#li953280133816)中源码所在路径下的“**sample-segmentation/script**”目录下。
+    >![](public_sys-resources/icon-note.gif) **说明：**   
+    >-   该部署方式，需要手动完成代码下载、模型转换、环境变量配置等过程。完成后，会对其中的过程会更加了解。
 
 ## 编译<a name="section3723145213347"></a>
 
