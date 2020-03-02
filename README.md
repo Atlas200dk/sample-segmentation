@@ -84,7 +84,7 @@
 
 3.  开始编译，打开Mindstudio工具，在工具栏中点击**Build \> Build \> Build-Configuration**。如[图 编译操作及生成文件](#fig1625447397)所示，会在目录下生成build和run文件夹。
 
-    **图 4**  编译操作及生成文件<a name="fig1487710597597"></a>  
+    **图 5**  编译操作及生成文件<a name="fig1487710597597"></a>  
     
 
     ![](figures/dd705e18dfdcfdfdb6eaa21fde48134.png)
@@ -110,7 +110,7 @@
 
 1.  在Mindstudio工具的工具栏中找到Run按钮，点击  **Run \> Run 'sample-segmentation'**，如[图 程序已执行示意图](#fig18918132273612)所示，可执行程序已经在开发板执行。
 
-    **图 5**  程序已执行示意图<a name="fig18918132273612"></a>  
+    **图 6**  程序已执行示意图<a name="fig18918132273612"></a>  
     
 
     ![](figures/6ed93ff8910f175d1b2a97b32c3ff75.png)
