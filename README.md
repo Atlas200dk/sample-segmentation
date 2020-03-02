@@ -36,14 +36,14 @@
 
     启动成功后，打开**sample-segmentation**工程，如[图 打开segmentation工程](#fig9485154817568)所示。
 
-    **图 2**  打开segmentation工程<a name="fig9485154817568"></a>  
+    **图 1**  打开segmentation工程<a name="fig9485154817568"></a>  
     
 
     ![](figures/dc1cf05640f1aa5d105a16b9ce590cd.png)
 
 2.  在**src/param\_configure.conf**文件中配置相关工程信息。
 
-    **图 3**  配置文件路径<a name="fig1777213106583"></a>  
+    **图 2**  配置文件路径<a name="fig1777213106583"></a>  
     
 
     ![](figures/a77616cc0ab2803023e54d0dce6708c.png)
@@ -75,16 +75,17 @@
 3. 执行deploy脚本， 进行配置参数调整及第三方库下载编译
     打开Mind Studio工具的Terminal，此时默认在代码主目录下，执行如下命令在后台指执行deploy脚本，进行环境部署。如[图 执行deploy脚本](#zh-cn_topic_0203223294_fig423515251038)所示。
     
-    **图 4**  执行deploy脚本<a name="zh-cn_topic_0203223294_fig4235152510387"></a>  
+    **图 3**  执行deploy脚本<a name="zh-cn_topic_0203223294_fig4235152510387"></a>  
     
     ![](figures/deploy.png)
     
-    >![](public_sys-resources/icon-note.gif) **说明：**   
+    >![](public_sys-resources/icon-note.gif) **说明：**  
+    >-   首次deploy时，没有部署第三方库时会自动下载并编译，耗时可能比较久，请耐心等待。后续再重新编译时，不会重复下载编译，部署如上图所示。 
     >-   depoly时，需要选择与开发板通信的主机侧ip，一般为虚拟网卡配置的ip。如果此ip和开发板ip属于同网段，则会自动选择并部署。如果非同网段，则需要手动输入与开发板通信的主机侧ip才能完成deploy。
 
 3.  开始编译，打开Mindstudio工具，在工具栏中点击**Build \> Build \> Build-Configuration**。如[图 编译操作及生成文件](#fig1625447397)所示，会在目录下生成build和run文件夹。
 
-    **图 5**  编译操作及生成文件<a name="fig1487710597597"></a>  
+    **图 4**  编译操作及生成文件<a name="fig1487710597597"></a>  
     
 
     ![](figures/dd705e18dfdcfdfdb6eaa21fde48134.png)
@@ -110,7 +111,7 @@
 
 1.  在Mindstudio工具的工具栏中找到Run按钮，点击  **Run \> Run 'sample-segmentation'**，如[图 程序已执行示意图](#fig18918132273612)所示，可执行程序已经在开发板执行。
 
-    **图 6**  程序已执行示意图<a name="fig18918132273612"></a>  
+    **图 5**  程序已执行示意图<a name="fig18918132273612"></a>  
     
 
     ![](figures/6ed93ff8910f175d1b2a97b32c3ff75.png)
