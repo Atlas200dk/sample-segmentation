@@ -97,7 +97,7 @@
 
     ![](figures/build_configuration.png)
 
-4.  将需要推理的图片复制到$HOME/AscendProjects/sample-segmentation/run/out 目录。
+4.  将需要测试的图片复制到$HOME/AscendProjects/sample-segmentation/run/out 目录。
 
     fcn模型使用/sample-segmentation/ImageNetRaw文件夹图片测试， erfnet模型使用/sample-segmentation/ImageCity文件夹图片测试。
 
@@ -129,7 +129,7 @@
 
     命令举例如下：
 
-    **cd  /home/HwHiAiUser/HIAI\_PROJECTS/workspace\_mind\_studio//sample-segmentation\_xxxx/out**
+    **cd  /home/HwHiAiUser/HIAI\_PROJECTS/workspace\_mind\_studio/sample-segmentation\_xxxx/out**
 
 4.  执行应用程序。
 
@@ -143,7 +143,7 @@
     -   -h/model\_height：模型的输入图片高度，为16\~4096之间的整数，请参考[表 通用语义分割网络应用使用模型](#table19942111763710)在Gitee上查看所使用模型文件的Readme，获取模型要求的输入数据的宽和高。
     -   -i/input\_path：输入图片的路径，可以是目录，表示当前目录下的所有图片都作为输入（可以指定多个输入）。
     -   -o/output\_path： 模型推理结果图片位置。
-    -   -c/output\_categories： 模型推理结果类别。
+    -   -c/output\_categories： 模型推理结果每个像素点的类别，fcn模型的类别为19，erfnet的类别为21。
 
-5.  其他详细参数请执行**python3 run\_segmentaion.py --help**命令参见帮助信息。
+5.  其他详细参数请执行**python3 run\_segmentation.py --help**命令参见帮助信息。
 
