@@ -1,6 +1,6 @@
 # 语义分割网络应用（C++）<a name="ZH-CN_TOPIC_0219037582"></a>
 
-本Application支持运行在Atlas 200 DK或者AI加速云服务器上，实现了对常见的语义分割网络的推理功能。
+本应用支持运行在Atlas 200 DK或者AI加速云服务器上，实现了对常见的语义分割网络的推理功能。
 
 当前分支中的应用适配**1.31.0.0及以上**版本的[DDK&RunTime](https://ascend.huawei.com/resources)。
 
@@ -24,6 +24,7 @@
     1.2 常规部署，请参考：https://gitee.com/Atlas200DK/sample-README/tree/master/sample-segmentation 。
 
     >![](public_sys-resources/icon-note.gif) **说明：**   
+    >
     >-   该部署方式，需要手动完成代码下载、模型转换、环境变量配置等过程。完成后，会对其中的过程会更加了解。
 
 ## 编译<a name="section3723145213347"></a>
@@ -64,7 +65,7 @@
 
     ```
     remote_host=192.168.1.2 
-    model_name=Fcn8s.om
+    model_name=fcn-8s.om
     ```
 
     >![](public_sys-resources/icon-note.gif) **说明：**   
@@ -109,7 +110,7 @@
 
 ## 运行<a name="section1620073406"></a>
 
-1.  在Mindstudio工具的工具栏中找到Run按钮，点击  **Run \> Run 'sample-segmentation'**，如[图 程序已执行示意图](#fig18918132273612)所示，可执行程序已经在开发板执行。
+1.  在Mindstudio工具的工具栏中找到Run按钮，点击  **Run \> Run 'sample-segmentation'**，如[图5 程序已执行示意图](#fig18918132273612)所示，可执行程序已经在开发板执行。
 
     **图 5**  程序已执行示意图<a name="fig18918132273612"></a>  
     
