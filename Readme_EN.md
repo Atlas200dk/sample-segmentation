@@ -1,159 +1,147 @@
-# Semantic Segmentation Network Application \(Python\)<a name="EN-US_TOPIC_0228757085"></a>
+# 语义分割网络应用（C++）<a name="ZH-CN_TOPIC_0228461807"></a>
 
-This application can run on the Atlas 200 DK to implement the inference function of the ERFNet network and output images with inference result.
+本Application支持运行在Atlas 200 DK或者AI加速云服务器上，实现了对常见的语义分割网络的推理功能。
 
-The current application adapts to  [DDK&RunTime](https://ascend.huawei.com/resources)  of 1.3.0.0 as well as 1.32.0.0 and later versions.
+当前分支中的应用适配**1.32.0.0及以上**版本的[DDK&RunTime](https://ascend.huawei.com/resources)。
 
-## Prerequisites<a name="section137245294533"></a>
+## 前提条件<a name="section137245294533"></a>
 
-Before deploying this sample, ensure that:
+部署此Sample前，需要准备好以下环境：
 
--   Mind Studio  has been installed.
+-   已完成Mind Studio的安装。
+-   已完成Atlas 200 DK开发者板与Mind Studio的连接，交叉编译器的安装，SD卡的制作及基本信息的配置等。
 
--   The Atlas 200 DK developer board has been connected to  Mind Studio, the SD card has been created, and the compilation environment has been configured.
--   The developer board is connected to the Internet over the USB port by default. The IP address of the developer board is  **192.168.1.2**.
+## 部署<a name="section412811285117"></a>
 
-## Software Preparation<a name="section8534138124114"></a>
+可以选择如下快速部署或者常规方法部署，二选一即可：
 
-Before running this application, obtain the source code package and configure the environment as follows.
+1.  快速部署，请参考：  [https://gitee.com/Atlas200DK/faster-deploy](https://gitee.com/Atlas200DK/faster-deploy)  。
 
-1.  <a name="li953280133816"></a>Obtain the source code package.
-    1.  By downloading the package
+    >![](public_sys-resources/icon-note.gif) **说明：**   
+    >-   该快速部署脚本可以快速部署多个案例，请选择segmentation案例部署即可。  
+    >-   该快速部署脚本自动完成了代码下载、模型转换、环境变量配置等流程，如果需要了解详细的部署过程请选择常规部署方式。转**[2. 常规部署](#li3208251440)**  
 
-        Download all code in the repository at  [https://gitee.com/Atlas200DK/sample-segmentation-python](https://gitee.com/Atlas200DK/sample-classification-python)  to any directory on Ubuntu Server where  Mind Studio  is located as the  Mind Studio  installation user, for example,  **$HOME/sample-segmentation-python**.
+2.  <a name="li3208251440"></a>常规部署，请参考：  [https://gitee.com/Atlas200DK/sample-READEME/tree/master/sample-segmentation](https://gitee.com/Atlas200DK/sample-READEME/tree/master/sample-segmentation)  。
 
-    2.  By running the  **git**  command
-
-        Run the following command in the  **$HOME/AscendProjects**  directory to download code:
-
-        **git clone https://gitee.com/Atlas200DK/sample-segmentation-python.git**
-
-2.  Obtain the network model required by the application.
-
-    Refer to  [Table 1](#table1119094515272)  to obtain the source network model used in this application and the corresponding weight file. Save them to any directory of the Ubuntu server with  Mind Studio  installed, for example,  **$HOME/ascend/models/sample-segmentation-python**.
-
-    **Table  1**  Models used in a semantic segmentation network application
-
-    <a name="table1119094515272"></a>
-    <table><thead align="left"><tr id="row677354502719"><th class="cellrowborder" valign="top" width="12.15%" id="mcps1.2.4.1.1"><p id="p167731845122717"><a name="p167731845122717"></a><a name="p167731845122717"></a>Model Name</p>
-    </th>
-    <th class="cellrowborder" valign="top" width="17.53%" id="mcps1.2.4.1.2"><p id="p277317459276"><a name="p277317459276"></a><a name="p277317459276"></a>Description</p>
-    </th>
-    <th class="cellrowborder" valign="top" width="70.32000000000001%" id="mcps1.2.4.1.3"><p id="p9773114512270"><a name="p9773114512270"></a><a name="p9773114512270"></a>Download Path</p>
-    </th>
-    </tr>
-    </thead>
-    <tbody><tr id="row3122314144215"><td class="cellrowborder" valign="top" width="12.15%" headers="mcps1.2.4.1.1 "><p id="p1910619166207"><a name="p1910619166207"></a><a name="p1910619166207"></a>ERFNet</p>
-    </td>
-    <td class="cellrowborder" valign="top" width="17.53%" headers="mcps1.2.4.1.2 "><p id="p2010681612020"><a name="p2010681612020"></a><a name="p2010681612020"></a>Semantic segmentation inference model.</p>
-    <p id="p1710615162207"><a name="p1710615162207"></a><a name="p1710615162207"></a>It is an ERFNet model based on Caffe.</p>
-    </td>
-    <td class="cellrowborder" valign="top" width="70.32000000000001%" headers="mcps1.2.4.1.3 "><p id="p910617162206"><a name="p910617162206"></a><a name="p910617162206"></a>Download the source network model file and its weight file by referring to<strong id="b159782239917"><a name="b159782239917"></a><a name="b159782239917"></a> README.md</strong> at <a href="https://gitee.com/HuaweiAscend/models/tree/master/computer_vision/segmentation/erfnet" target="_blank" rel="noopener noreferrer">https://gitee.com/HuaweiAscend/models/tree/master/computer_vision/segmentation/erfnet</a>.</p>
-    </td>
-    </tr>
-    </tbody>
-    </table>
-
-3.  Convert the source network model to a model supported by the Ascend AI processor.
-    1.  Choose  **Tools \> Model Convert**  from the main menu of  Mind Studio.
-    2.  On the  **Model Conversion**  page, set  **Model File**  and  **Weight File**  to the model file and weight file downloaded in  [1](#li953280133816), respectively.
-        -   Set  **Model Name**  to the model name in  [Table 1](#table1119094515272).
-        -   During ERFNet model conversion, set  **Model Image Format**  to  **BGR888\_U8**  and disable  **MeanLess**.
-        -   Retain default values for other parameters.
-
-    3.  Click  **OK**  to start model conversion.
-
-        After a model of 1.1.0.0 or 1.3.0.0 version is successfully converted, a .om offline model is generated in the  **$HOME/tools/che/model-zoo/my-model/xxx**  directory.
-
-        After a model of 1.31.0.0 or a later version is successfully converted, an .om offline model is generated in the  **$HOME/modelzoo/xxx/device/xxx.om**  directory.
-
-    4.  Upload the converted .om model file to the  **sample-segmentation-python/segmentationapp/models**  directory under the source code path in  [Step 1](#li953280133816).
+    >![](public_sys-resources/icon-note.gif) **说明：**   
+    >-   该部署方式，需要手动完成代码下载、模型转换、环境变量配置等过程。完成后，会对其中的过程更加了解。  
 
 
-## Environment Deployment<a name="section218113616146"></a>
+## 编译<a name="section3723145213347"></a>
 
-1.  Copy the application code to the developer board.
+1.  打开对应的工程。
 
-    Go to the root directory of the semantic segmentation application \(python\) code as the  Mind Studio  installation user, for example,  **$HOME/sample-segmentation-python**, and run the following command to copy the application code to the developer board:
+    以Mind Studio安装用户在命令行中进入安装包解压后的“MindStudio-ubuntu/bin”目录，如：$HOME/MindStudio-ubuntu/bin。执行如下命令启动Mind Studio。
 
-    **scp -r ../sample-segmentation-python/ HwHiAiUser@192.168.1.2:/home/HwHiAiUser/HIAI\_PROJECTS**
+    **./MindStudio.sh**
 
-    Type the password of the developer board as prompted. The default password is  **Mind@123**, as shown in  [Figure 1](#en-us_topic_0219036254_fig1660453512014).
+    启动成功后，打开**sample-segmentation**工程，如[图 打开segmentation工程](#zh-cn_topic_0219037582_fig9485154817568)所示。
 
-    **Figure  1**  Copying application code<a name="en-us_topic_0219036254_fig1660453512014"></a>  
+    **图 1**  打开segmentation工程<a name="zh-cn_topic_0219037582_fig9485154817568"></a>  
     
 
-    ![](figures/en-us_image_0228836881.png)
+    ![](figures/dc1cf05640f1aa5d105a16b9ce590cd.png)
 
-    Log in to the host side as the  **HwHiAiUser**  user in SSH mode on Ubuntu Server where  Mind Studio  is located.
+2.  在**src/param\_configure.conf**文件中配置相关工程信息。
 
-    **ssh HwHiAiUser@192.168.1.2**
-
-    Switch to the  **root**  user. The default password of the  **root**  user on the developer board is  **Mind@123**.
-
-    **su root**
-
-2.  Configure the network connection of the developer board.
-
-    Configure the network connection of the developer board by referring to  [https://gitee.com/Atlas200DK/sample-READEME/tree/master/DK\_NetworkConnect](https://gitee.com/Atlas200DK/sample-READEME/tree/master/DK_NetworkConnect).
-
-3.  Install the environment dependency.
-
-    Configure the environment dependency by referring to  [https://gitee.com/Atlas200DK/sample-READEME/tree/master/DK\_Environment](https://gitee.com/Atlas200DK/sample-READEME/tree/master/DK_Environment).
-
-
-## Application Running<a name="section6245151616426"></a>
-
-1.  Switch to the  **HwHiAiUser**  user and go to the directory where the semantic segmentation network application code is located.
-
-    **su HwHiAiUser**
-
-    **cd \~/HIAI\_PROJECTS/sample-segmentation-python/segmentationapp**
-
-2.  Run the application.
-
-    Run the  **segmentation.py**  script to print the inference result on the execution terminal.
-
-    Command example:
-
-    **python segmentation.py**
-
-    [Figure 2](#fig1863053617417)  shows the inference result after the execution is successful.
-
-    **Figure  2**  Successful inference<a name="fig1863053617417"></a>  
+    **图 2**  配置文件路径<a name="fig1777213106583"></a>  
     
 
-    ![](figures/en-us_image_0228757232.png)
+    ![](figures/a77616cc0ab2803023e54d0dce6708c.png)
 
-3.  Query the execution result.
+    该配置文件内容如下：
 
-    The execution result is stored in  **Result**  of the current directory. You need to run the following command on the Atlas 200 DK to copy the result to the Ubuntu server to view the inference result image:
+    ```
+    remote_host= 
+    model_name=
+    ```
 
-    **scp -r username@host\_ip:/home/username/HIAI\_PROJECTS/sample-classification-python/Result \~**
+    需要手动添加参数配置：
 
-    -   **username**: user name of the developer board. The default value is  **HwHiAiUser**.
-    -   **host\_ip**: IP address of the developer board. Generally, the IP address is  **192.168.1.2**  for USB connection and  **192.168.0.2**  for network cable connection.
+    -   remote\_host：Atlas 200 DK开发者板的IP地址。
+    -   model\_name : 离线模型名称。
 
-    **Command example:**
+    配置示例：
 
-    **scp -r HwHiAiUser@192.168.1.2:/home/HwHiAiUser/HIAI\_PROJECTS/sample-classification-python/Result \~**
+    ```
+    remote_host=192.168.1.2 
+    model_name=Fcn8s.om
+    ```
 
-    This command copies the inference result to the home directory of the Mind Studio installation user. You can view the inference result directly.
+    >![](public_sys-resources/icon-note.gif) **说明：**   
+    >-   参数必须全部填写，否则无法通过build。  
+    >-   注意参数填写时不需要使用“”符号。  
+    >-   配置文件中只能填入单个模型名称，本示例是以fcn举例，用户可以使用常规部署中列举的其它模型按照文档步骤进行替换运行。  
+
+3.  执行deploy脚本， 进行配置参数调整及第三方库下载编译 打开Mind Studio工具的Terminal，此时默认在代码主目录下，执行如下命令在后台指执行deploy脚本，进行环境部署。如[图 执行deploy脚本](#zh-cn_topic_0219028422_fig4961151613216)所示。
+
+    **图 3**  执行deploy脚本<a name="zh-cn_topic_0219028422_fig4961151613216"></a>  
+    ![](figures/执行deploy脚本-20.png "执行deploy脚本-20")
+
+    >![](public_sys-resources/icon-note.gif) **说明：**   
+    >-   首次deploy时，没有部署第三方库时会自动下载并编译，耗时可能比较久，请耐心等待。后续再重新编译时，不会重复下载编译，部署如上图所示。  
+    >-   deploy时，需要选择与开发板通信的主机侧ip，一般为虚拟网卡配置的ip。如果此ip和开发板ip属于同网段，则会自动选择并部署。如果非同网段，则需要手动输入与开发板通信的主机侧ip才能完成deploy。  
+
+4.  开始编译，打开Mindstudio工具，在工具栏中点击**Build \> Build \> Build-Configuration**。如[图 编译操作及生成文件](#zh-cn_topic_0219037582_fig1487710597597)所示，会在目录下生成build和run文件夹。
+
+    **图 4**  编译操作及生成文件<a name="zh-cn_topic_0219037582_fig1487710597597"></a>  
+    
+
+    ![](figures/dd705e18dfdcfdfdb6eaa21fde48134.png)
+
+    注意：
+
+    首次编译工程时，**Build \> Build**为灰色不可点击状态。需要点击**Build \> Edit Build Configuration**，配置编译参数后再进行编译。
+
+    ![](figures/build_configuration-23.png)
+
+5.  将需要推理的图片复制到：$HOME/AscendProjects/sample-segmentation/run/out 目录。
+
+    fcn模型使用/sample-segmentation/ImageNetRaw文件夹下的样例图片进行测试， erfnet模型使用/sample-segmentation/ImageCity文件夹下的样例图片进行测试。
+
+    图片要求如下：
+
+    -   格式：jpg、png、bmp。
+    -   输入图片宽度：16px\~4096px之间的整数。
+    -   输入图片高度：16px\~4096px之间的整数。
 
 
-## Remarks<a name="section1092612277429"></a>
+## 运行<a name="section1620073406"></a>
 
--   **The process of the semantic segmentation network application \(Python\) is as follows:**
-    1.  Read a JPEG image from the  **cityimage**  directory.
-    2.  Call OpenCV to resize the read JPEG image to 1024 x 512 and convert it to YUV420SP.
-    3.  Send the converted YUV420SP image data to Matrix for inference. The demo uses the ERFNet network, and the inference result includes the confidence values of 19 categories for each pixel.
-    4.  During post-processing, the category of the highest confidence value is used for each pixel, and pixels of the same category in the image are marked with the same color. A colored image is stored in the  **Result**  directory.
+1.  在Mindstudio工具的工具栏中找到Run按钮，点击  **Run \> Run 'sample-segmentation'**，如[图 程序已执行示意图](#fig18918132273612)所示，可执行程序已经在开发板执行。
 
--   **The directory structure of the semantic segmentation application \(Python\) is described as follows:**
-    -   **cityimage**: directory of input images
-    -   **segmentation.py**: main program
-    -   **jpegHandler.py: jpeg**: JPEG image processing, such as resizing and color space conversion \(CSC\)
-    -   **models**: directory of model networks
-    -   **Result**: directory of labeled images
+    **图 5**  程序已执行示意图<a name="fig18918132273612"></a>  
+    
 
+    ![](figures/6ed93ff8910f175d1b2a97b32c3ff75.png)
+
+    以上报错信息请忽略，因为Mind Studio无法为可执行程序传参，上述步骤是将可执行程序与依赖的库文件部署到开发者板，此步骤需要ssh登录到开发者板至相应的目录文件下手动执行，具体请参考以下步骤。
+
+2.  在Mind Studio所在Ubuntu服务器中，以HwHiAiUser用户SSH登录到Host侧。
+
+    **ssh HwHiAiUser@**_host\_ip_
+
+    对于Atlas 200 DK，host\_ip默认为192.168.1.2（USB连接）或者192.168.0.2（NIC连接）。
+
+3.  进入语义分割网络应用的可执行文件所在路径。
+
+    命令举例如下：
+
+    **cd  /home/HwHiAiUser/HIAI\_PROJECTS/workspace\_mind\_studio/sample-segmentation\_xxxx/out**
+
+4.  执行应用程序。
+
+    执行**run\_segmentation.py**脚本会将推理生成的图片保存至指定路径。
+
+    命令示例如下所示：
+
+    **python3 run\_segmentation.py  -w  _500_  -h  _500_  -i** **_./example.jpg -c 19_** 
+
+    -   -w/model\_width：模型的输入图片宽度，为16\~4096之间的整数。
+    -   -h/model\_height：模型的输入图片高度，为16\~4096之间的整数。
+    -   -i/input\_path：输入图片的路径，可以是目录，表示当前目录下的所有图片都作为输入（可以指定多个输入）。
+    -   -o/output\_path： 模型推理结果图片位置。
+    -   -c/output\_categories： 模型推理结果每个像素点的类别，fcn模型的类别为21，erfnet的类别为19。
+
+5.  其他详细参数请执行**python3 run\_segmentation.py --help**命令参见帮助信息。
 
