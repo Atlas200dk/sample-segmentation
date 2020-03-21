@@ -1,3 +1,5 @@
+中文|[English](Readme_EN.md)
+
 # 语义分割网络应用（C++）<a name="ZH-CN_TOPIC_0228461807"></a>
 
 本Application支持运行在Atlas 200 DK或者AI加速云服务器上，实现了对常见的语义分割网络的推理功能。
