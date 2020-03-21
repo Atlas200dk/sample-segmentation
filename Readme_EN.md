@@ -1,3 +1,5 @@
+English|[中文](Readme.md)
+
 # Semantic Segmentation Network Application \(C++\)<a name="EN-US_TOPIC_0228461807"></a>
 
 This application runs on the Atlas 200 DK or the AI acceleration cloud server to implement the inference function by using a semantic segmentation network.
