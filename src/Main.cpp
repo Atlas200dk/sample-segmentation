@@ -30,7 +30,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * ============================================================================
  */
-#include "main.h"
+#include "Main.h"
 
 #include <cstdlib>
 #include <memory>
@@ -90,11 +90,18 @@ HIAI_StatusT CustomDataRecvInterface::RecvData(
 void SetConsoleParams(char *argv[], shared_ptr<ConsoleParams> param_ptr) {
   // no need to check anything, python script already checked
   // and parameters all fixed position
+  /*param_ptr->model_width = 500;
+  param_ptr->model_height = 500;
+  param_ptr->input_path = "/home/HwHiAiUser/HIAI_DATANDMODELSET/workspace_mind_studio/ImageNetRaw/";
+  param_ptr->output_path = "./result_files";
+  param_ptr->output_nums = 21;
+  system("mkdir result_files");*/
   param_ptr->model_width = atoi(argv[kModelWidthPos]);
   param_ptr->model_height = atoi(argv[kModelHeightPos]);
   param_ptr->input_path = string(argv[kImagePathPos]);
   param_ptr->output_path = string(argv[kOutputPathPos]);
   param_ptr->output_nums = atoi(argv[kOutputNumsPos]);
+
 }
 
 int main(int argc, char *argv[]) {
