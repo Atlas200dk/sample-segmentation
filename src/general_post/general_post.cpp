@@ -42,6 +42,8 @@
 
 #include "hiaiengine/log.h"
 #include "opencv2/opencv.hpp"
+#include "opencv2/imgcodecs/legacy/constants_c.h"
+#include "opencv2/imgproc/types_c.h"
 #include "tool_api.h"
 
 using hiai::Engine;
@@ -82,8 +84,6 @@ const string kFileSperator = "/";
 }
  // namespace
 
-// register custom data type
-HIAI_REGISTER_DATA_TYPE("EngineTrans", EngineTrans);
 
 HIAI_StatusT GeneralPost::Init(
   const hiai::AIConfig &config,
@@ -190,12 +190,13 @@ HIAI_StatusT GeneralPost::SegmentationNetPostProcess(
 
   /* get origin pic */
   cv::Mat originImage= cv::imread(result->image_info.path, CV_LOAD_IMAGE_UNCHANGED); 
-  resize(originImage,originImage,cv::Size( result->image_info.width,result->image_info.height),
-  	originImage.cols/result->image_info.width,originImage.rows/result->image_info.height);	
+  resize(Infer_output_image,Infer_output_image,cv::Size( originImage.cols,originImage.rows),
+  	result->image_info.width/originImage.cols,result->image_info.height/originImage.rows);
 
   /* get display image*/
   cv::Mat displayImage	;  
   displayImage = 0.5*Infer_output_image +0.5*originImage;
+ // displayImage = Infer_output_image ;
   
   /*set output img name */
   stringstream sstream;
@@ -207,6 +208,7 @@ HIAI_StatusT GeneralPost::SegmentationNetPostProcess(
   sstream << result->console_params.output_path << kFileSperator << kOutputFilePrefix << file_name;
   string output_path = sstream.str();
 
+
   /*write img */ 
   save_ret = cv::imwrite(output_path, displayImage);
   if (!save_ret) {
@@ -215,7 +217,7 @@ HIAI_StatusT GeneralPost::SegmentationNetPostProcess(
     return HIAI_ERROR;
   }
 
- // INFO_LOG("output_image channels imwrite  end \n");
+  printf(" Succss to deal  file %s  \n",result->image_info.path.c_str());
 
   return HIAI_OK;  
 }

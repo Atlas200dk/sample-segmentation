@@ -35,40 +35,36 @@
 #
 import argparse
 import os
+import re
 import sys
 
-MODEL_PATH = '${MODEL_PATH}'
-GRAPH_TEMPLATE_FILE = 'graph.template'
-GRAPH_CONFIG_FILE = 'graph.config'
+CPP_EXE = None
 
-CPP_EXE = './ascend_segmentation'
 CONCOLE_LIST = ' {} {} {} {} {}'
 
 
 def get_args():
     """input argument parser function
-        -m --model_path: davinci offline model path.
         -w --model_width: width of input images required by model.
         -h --model_height: height of input images required by model.
         -i --input_path: paths and folders of input images.
         -o --output_path: folders of output images.
         -c --output_categories: number of  output categories.
         eg:
-        python3 object_detection_faster_rcnn.py -m faster.om \
+        python3 run_segmentation.py  \
         -w 512 -h 512 -i ./example.jpg -o ./out -c 21
     """
     parser = argparse.ArgumentParser(
         conflict_handler='resolve',
-        description='''eg: python3 object_detection_faster_rcnn.py
-        -m faster.om -w 512 -h 512 -i ./example.jpg -o ./out -c 21''')
-    parser.add_argument('-m', '--model_path', required=True,
-                        help='path of davinci model file.')
+        description='''eg: python3 run_segmentation.py
+       -w 512 -h 512 -i ./example.jpg -o ./out -c 21''')
     parser.add_argument('-w', '--model_width', required=True, type=int,
-                        help='resized image width before inference.')
+                        help='model input width. range:[16,4096]')
     parser.add_argument('-h', '--model_height', required=True, type=int,
-                        help='resized image height before inference.')
+                        help='model input height.range:[16,4096]')
     parser.add_argument('-i', '--input_path', required=True, nargs='*',
-                        help='file path or folder of input images.')
+                        help='paths of input images. support multipath, using \
+                              spaces to distinguish.')
     parser.add_argument('-o', '--output_path', default='./',
                         help='folder of output images.')
     parser.add_argument('-c', '--output_categories', type=int, default=21,
@@ -87,16 +83,13 @@ def validate_args(args):
     :return: True or False
     """
     check_flag = True
-    if not os.path.isfile(args.model_path):
-        eprint('[ERROR] offline model does not exist.')
-        check_flag = False
     for path in args.input_path:
         if os.path.isdir(path):
             if not os.listdir(path):
-                eprint('[ERROR] input image folder is empty.')
+                eprint('[ERROR] input image path=%r is empty.' % path)
                 check_flag = False
         elif not os.path.isfile(path):
-            eprint('[ERROR] input images does not exist.')
+            eprint('[ERROR] input image path=%r does not exist.' % path)
             check_flag = False
     if os.path.isfile(args.output_path):
         eprint('[ERROR] argument output_path should be a folder.')
@@ -107,18 +100,15 @@ def validate_args(args):
                'should between 2 and 32.')
         check_flag = False
     if not 16 <= args.model_width <= 4096:
-        eprint('[ERROR] resized image width should between 16 and 4096.')
+        eprint('[ERROR] model width must be between 16 and 4096.')
         check_flag = False
     if not 16 <= args.model_height <= 4096:
-        eprint('[ERROR] resized image height should between 16 andd 4096.')
+        eprint('[ERROR] model height must be between 16 andd 4096.')
         check_flag = False
     return check_flag
 
 
 def assemble_console_params(args):
-    """assemble console params as agreed with cpp program.
-    :return: console params string
-    """
     image_path = ','.join(args.input_path)
     console_params = CONCOLE_LIST.format(args.model_width, args.model_height,
                                          image_path, args.output_path,
@@ -126,31 +116,35 @@ def assemble_console_params(args):
     return console_params
 
 
-def generate_graph(model_path):
-    """generate graph config files base on template.
-    :param model_path: davinci offline model path.
-    """
-    if not os.path.isfile(GRAPH_TEMPLATE_FILE):
-        eprint('[ERROR] graph template file does not exist.')
-        exit()
-    with open(GRAPH_TEMPLATE_FILE, 'r') as template_file:
-        contents = template_file.read()
-        contents = contents.replace(MODEL_PATH, model_path)
-    with open(GRAPH_CONFIG_FILE, 'w') as config_file:
-        config_file.write(contents)
-
+def Init_CPP_EXE():
+    check_flag = True
+    global CPP_EXE
+    file_dir=os.getcwd()
+    count=0
+    for dirpath, dirname, filename in os.walk(file_dir):
+        if count >= 1:
+            break
+        for i in filename:
+            if re.match("workspace_mind_studio",i):
+                CPP_EXE='./'+i
+                break
+    if not CPP_EXE:
+        eprint('[ERROR] excute file does not exist.')
+        check_flag = False
+    return check_flag
+	
 
 def main():
     """main function to receive console params then call cpp program.
     """
     args = get_args()
     if validate_args(args):
-        generate_graph(os.path.realpath(args.model_path))
-        if os.path.exists(CPP_EXE):
-            console_params = assemble_console_params(args)
-            os.system(CPP_EXE + console_params)
-        else:
-            eprint('[ERROR] cpp file does not exist.')
+        if Init_CPP_EXE():
+            if os.path.exists(CPP_EXE):
+                console_params = assemble_console_params(args)
+                os.system(CPP_EXE + console_params)
+            else:
+                eprint('[ERROR] excute file does not exist.')
 
 
 if __name__ == '__main__':
